@@ -1,16 +1,15 @@
 import torch
 import torch.nn.functional as F
 from lucas_dataset import LucasDataset
-import torchvision
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from soc_machine import SOCMachine
+from lucas_machine import LucasMachine
 
 def train(device):
-    batch_size = 5000
+    batch_size = 50
     cid = LucasDataset(is_train=True)
     dataloader = DataLoader(cid, batch_size=batch_size, shuffle=True)
-    model = SOCMachine()
+    model = LucasMachine()
     model.train()
     model.to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-2, weight_decay=1e-4)

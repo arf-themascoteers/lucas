@@ -11,17 +11,18 @@ from sklearn import model_selection
 class LucasDataset(Dataset):
     def __init__(self, is_train=True):
         self.is_train = is_train
-        self.csv_file_location = "data/lucasmini.csv"
+        self.csv_file_location = "data/lucasmid.csv"
         self.work_csv_file_location = "data/work.csv"
         self.scaler = None
         self.df = pd.read_csv(self.csv_file_location)
+        self.df = self.df.drop(columns=["lc1","lu1"])
+        self.df = self.df.loc[self.df['oc'] <= 40]
         train, test = model_selection.train_test_split(self.df, test_size=0.2)
         self.df = train
         if not self.is_train:
             self.df = test
 
         self.df = self._preprocess(self.df)
-        self.df = self.df.drop(columns=["lc1","lu1"])
         self.df.to_csv(self.work_csv_file_location, index = False)
 
     def _preprocess(self, df):
@@ -29,13 +30,18 @@ class LucasDataset(Dataset):
         return df
 
     def __scale__(self, df):
-        x = df[["oc"]].values.astype(float)
-        for col in df.columns[1:]:
+        for col in df.columns[1:11]:
             if col == "lc1" or col == "lu1":
                 continue
             df, x_scaler = self.__scale_col__(df, col)
             if col == "oc":
                 self.scaler = x_scaler
+
+        x = df[df.columns[11:]].values.astype(float)
+        scaler = MinMaxScaler()
+        x_scaled = scaler.fit_transform(x)
+        df[df.columns[11:]] = x_scaled
+
         return df
 
     def __scale_col__(self, df, col):
@@ -57,8 +63,16 @@ class LucasDataset(Dataset):
     def __getitem__(self, idx):
         row = self.df.iloc[idx]
         soc = row["oc"]
-        x = list(row[1:])
+        x = list(row[11:])
         return torch.tensor(x, dtype=torch.float32), torch.tensor(soc, dtype=torch.float32)
+
+    def get_x(self):
+        return self.df[self.df.columns[11:]].values
+        #return self.df.iloc[0:100, 2:11].values
+
+    def get_y(self):
+        return self.df[self.df.columns[1]].values
+        #return self.df.iloc[0:100, 1].values
 
 
 if __name__ == "__main__":
@@ -66,6 +80,7 @@ if __name__ == "__main__":
     dataloader = DataLoader(cid, batch_size=1, shuffle=True)
     for x, soc in dataloader:
         print(x)
+        print(x.shape[1])
         print(soc)
         exit(0)
 
