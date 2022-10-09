@@ -1,5 +1,5 @@
 import lucas_dataset
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 import pickle
 from sklearn.metrics import r2_score
 from sklearn.metrics import r2_score, mean_squared_error
@@ -8,14 +8,15 @@ def train():
     ds = lucas_dataset.LucasDataset(is_train=True)
     x = ds.get_x()
     y = ds.get_y()
-    reg = LinearRegression().fit(x,y)
+    reg = RandomForestRegressor().fit(x,y)
 
     print("Train done")
 
-    pickle.dump(reg, open("models/linear2","wb"))
+    pickle.dump(reg, open("models/rf","wb"))
+
 
 def test():
-    reg = pickle.load(open('models/linear2', 'rb'))
+    reg = pickle.load(open('models/rf', 'rb'))
     ds = lucas_dataset.LucasDataset(is_train=False)
     x = ds.get_x()
     y = ds.get_y()

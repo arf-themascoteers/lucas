@@ -6,27 +6,44 @@ from torch.utils.data import DataLoader
 import os
 from sklearn.preprocessing import MinMaxScaler
 from sklearn import model_selection
+import dwt
 
 
 class LucasDataset(Dataset):
     def __init__(self, is_train=True):
+        self.preload = False
+        self.dump = False
         self.is_train = is_train
-        self.csv_file_location = "data/lucas.csv"
-        self.work_csv_file_location = "data/work.csv"
+        self.csv_file_location = "data/lucasmid.csv"
+        self.work_csv_file_location_train = "data/train.csv"
+        self.work_csv_file_location_test = "data/test.csv"
         self.scaler = None
-        self.df = pd.read_csv(self.csv_file_location)
-        self.df = self.df.drop(columns=["lc1","lu1"])
-        self.df = self.df.loc[self.df['oc'] <= 40]
-        train, test = model_selection.train_test_split(self.df, test_size=0.2)
-        self.df = train
-        if not self.is_train:
-            self.df = test
+        if self.preload:
+            if self.is_train:
+                self.df = pd.read_csv(self.work_csv_file_location_train)
+            else:
+                self.df = pd.read_csv(self.work_csv_file_location_test)
+            self.df = self._preprocess(self.df)
+        else:
+            self.df = pd.read_csv(self.csv_file_location)
+            self.df = self.df.drop(columns=["lc1","lu1"])
+            self.df = self.df.loc[self.df['oc'] <= 40]
+            train, test = model_selection.train_test_split(self.df, test_size=0.2)
+            self.df = train
+            if not self.is_train:
+                self.df = test
 
-        self.df = self._preprocess(self.df)
-        self.df.to_csv(self.work_csv_file_location, index = False)
+            self.df = self._preprocess(self.df)
+
+            if self.dump:
+                if self.is_train:
+                    self.df.to_csv(self.work_csv_file_location_train, index=False)
+                else:
+                    self.df.to_csv(self.work_csv_file_location_test, index=False)
+
 
     def _preprocess(self, df):
-        self.__scale__(df)
+        df = self.__scale__(df)
         return df
 
     def __scale__(self, df):
@@ -53,13 +70,10 @@ class LucasDataset(Dataset):
         a_scaler = MinMaxScaler()
         x_scaled = a_scaler.fit_transform(x)
         df[col] = x_scaled
-        return df, x_scaled
+        return df, a_scaler
 
-    def unscale(self, values):
-        values = [[i] for i in values]
-        values = self.scaler.inverse_transform(values)
-        values = [i[0] for i in values]
-        return values
+    def unscale(self, value):
+        return self.scaler.inverse_transform([[value]])[0][0]
 
     def __len__(self):
         return len(self.df)
@@ -68,19 +82,20 @@ class LucasDataset(Dataset):
         row = self.df.iloc[idx]
         soc = row["oc"]
         x = list(row[11:])
+        x = dwt.transform(x)
         return torch.tensor(x, dtype=torch.float32), torch.tensor(soc, dtype=torch.float32)
 
     def get_x(self):
-        return self.df[self.df.columns[11:]].values
-        #return self.df.iloc[0:100, 2:11].values
+        x = self.df[self.df.columns[11:]].values
+        return dwt.transform(x)
 
     def get_y(self):
         return self.df[self.df.columns[1]].values
-        #return self.df.iloc[0:100, 1].values
 
 
 if __name__ == "__main__":
     cid = LucasDataset()
+    print(cid.unscale(0.5))
     dataloader = DataLoader(cid, batch_size=1, shuffle=True)
     for x, soc in dataloader:
         print(x)
