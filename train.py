@@ -12,7 +12,7 @@ def train(device):
     model = LucasMachine()
     model.train()
     model.to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-1, weight_decay=1e-2)
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-2, weight_decay=1e-3)
     criterion = torch.nn.MSELoss(reduction='mean')
     num_epochs = 500
     n_batches = int(len(cid)/batch_size) + 1
