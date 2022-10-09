@@ -11,7 +11,7 @@ from sklearn import model_selection
 class LucasDataset(Dataset):
     def __init__(self, is_train=True):
         self.is_train = is_train
-        self.csv_file_location = "data/lucasmid.csv"
+        self.csv_file_location = "data/lucas.csv"
         self.work_csv_file_location = "data/work.csv"
         self.scaler = None
         self.df = pd.read_csv(self.csv_file_location)
@@ -38,8 +38,12 @@ class LucasDataset(Dataset):
                 self.scaler = x_scaler
 
         x = df[df.columns[11:]].values.astype(float)
+        nrows = x.shape[0]
+        ncols = x.shape[1]
+        x = x.reshape((nrows * ncols, 1))
         scaler = MinMaxScaler()
         x_scaled = scaler.fit_transform(x)
+        x_scaled = x_scaled.reshape((nrows, ncols))
         df[df.columns[11:]] = x_scaled
 
         return df
