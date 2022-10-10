@@ -13,6 +13,7 @@ class LucasDataset(Dataset):
     def __init__(self, is_train=True):
         self.preload = False
         self.dump = False
+        self.DWT = False
         self.is_train = is_train
         self.csv_file_location = "data/lucasmid.csv"
         self.work_csv_file_location_train = "data/train.csv"
@@ -41,7 +42,10 @@ class LucasDataset(Dataset):
                 else:
                     self.df.to_csv(self.work_csv_file_location_test, index=False)
 
-        self.x = dwt.transform(self.df[self.df.columns[11:]].values)
+        if self.DWT:
+            self.x = dwt.transform(self.df[self.df.columns[11:]].values)
+        else:
+            self.x = self.df[self.df.columns[11:]].values
         self.y = self.df[self.df.columns[1]].values
 
     def _preprocess(self, df):

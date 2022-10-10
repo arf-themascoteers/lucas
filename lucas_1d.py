@@ -14,7 +14,7 @@ class Lucas1D(nn.Module):
             nn.LeakyReLU(),
             nn.AvgPool1d(kernel_size=4),
             nn.Flatten(),
-            nn.Linear(80,1)
+            #nn.Linear(80,1)
         )
 
     def forward(self, x):
