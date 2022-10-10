@@ -7,10 +7,7 @@ class LucasMachine(nn.Module):
     def __init__(self):
         super().__init__()
         self.band_net = nn.Sequential(
-            #nn.Linear(4200,1)
-            nn.Linear(4200,64),
-            nn.LeakyReLU(),
-            nn.Linear(64, 1)
+            nn.Linear(4200,1)
         )
 
     def forward(self, x):
