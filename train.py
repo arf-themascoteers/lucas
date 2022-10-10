@@ -6,15 +6,15 @@ from torch.utils.data import DataLoader
 from lucas_machine import LucasMachine
 
 def train(device):
-    batch_size = 1000
+    batch_size = 3000
     cid = LucasDataset(is_train=True)
     dataloader = DataLoader(cid, batch_size=batch_size, shuffle=True)
     model = LucasMachine()
     model.train()
     model.to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-2, weight_decay=1e-5)
     criterion = torch.nn.MSELoss(reduction='mean')
-    num_epochs = 5000
+    num_epochs = 300
     n_batches = int(len(cid)/batch_size) + 1
     batch_number = 0
     loss = None

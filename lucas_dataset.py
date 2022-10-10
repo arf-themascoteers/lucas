@@ -11,7 +11,7 @@ import dwt
 
 class LucasDataset(Dataset):
     def __init__(self, is_train=True):
-        self.preload = False
+        self.preload = True
         self.dump = False
         self.DWT = False
         self.is_train = is_train

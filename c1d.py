@@ -8,7 +8,7 @@ from sklearn.metrics import r2_score
 
 
 def train(device):
-    batch_size = 1000
+    batch_size = 5000
     cid = LucasDataset(is_train=True)
     dataloader = DataLoader(cid, batch_size=batch_size, shuffle=True)
     model = Lucas1D()
@@ -16,7 +16,7 @@ def train(device):
     model.to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
     criterion = torch.nn.MSELoss(reduction='mean')
-    num_epochs = 2000
+    num_epochs = 200
     n_batches = int(len(cid)/batch_size) + 1
     batch_number = 0
     loss = None

@@ -8,7 +8,7 @@ def train():
     ds = lucas_dataset.LucasDataset(is_train=True)
     x = ds.get_x()
     y = ds.get_y()
-    reg = RandomForestRegressor().fit(x,y)
+    reg = RandomForestRegressor(max_depth=5, n_estimators=1000).fit(x,y)
 
     print("Train done")
 
