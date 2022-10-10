@@ -14,9 +14,9 @@ def train(device):
     model = Lucas1D()
     model.train()
     model.to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
     criterion = torch.nn.MSELoss(reduction='mean')
-    num_epochs = 3000
+    num_epochs = 2000
     n_batches = int(len(cid)/batch_size) + 1
     batch_number = 0
     loss = None

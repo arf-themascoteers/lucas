@@ -9,12 +9,15 @@ class Lucas1D(nn.Module):
         self.band_net = nn.Sequential(
             nn.Conv1d(1,4,10),
             nn.LeakyReLU(),
-            nn.AvgPool1d(kernel_size=4),
+            nn.AvgPool1d(kernel_size=5),
             nn.Conv1d(4,16,10),
             nn.LeakyReLU(),
-            nn.AvgPool1d(kernel_size=4),
+            nn.AvgPool1d(kernel_size=5),
+            nn.Conv1d(16, 32, 10),
+            nn.LeakyReLU(),
+            nn.AvgPool1d(kernel_size=5),
             nn.Flatten(),
-            #nn.Linear(80,1)
+            nn.Linear(992,1)
         )
 
     def forward(self, x):
