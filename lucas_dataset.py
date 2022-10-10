@@ -41,6 +41,8 @@ class LucasDataset(Dataset):
                 else:
                     self.df.to_csv(self.work_csv_file_location_test, index=False)
 
+        self.x = dwt.transform(self.df[self.df.columns[11:]].values)
+        self.y = self.df[self.df.columns[1]].values
 
     def _preprocess(self, df):
         df = self.__scale__(df)
@@ -79,16 +81,13 @@ class LucasDataset(Dataset):
         return len(self.df)
 
     def __getitem__(self, idx):
-        row = self.df.iloc[idx]
-        soc = row["oc"]
-        x = list(row[11:])
-        #x = dwt.transform(x)
-        return torch.tensor(x, dtype=torch.float32), torch.tensor(soc, dtype=torch.float32)
+        this_x = self.x[idx]
+        soc = self.y[idx]
+        return torch.tensor(this_x, dtype=torch.float32), torch.tensor(soc, dtype=torch.float32)
 
     def get_x(self):
         x = self.df[self.df.columns[11:]].values
         return x
-        #return dwt.transform(x)
 
     def get_y(self):
         return self.df[self.df.columns[1]].values

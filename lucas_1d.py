@@ -3,21 +3,18 @@ import torch.nn.functional as F
 import torch
 
 
-class LucasMachine(nn.Module):
+class Lucas1D(nn.Module):
     def __init__(self):
         super().__init__()
         self.band_net = nn.Sequential(
             nn.Conv1d(1,4,10),
             nn.LeakyReLU(),
-            nn.AvgPool1d(kernel_size=10),
+            nn.AvgPool1d(kernel_size=4),
             nn.Conv1d(4,16,10),
             nn.LeakyReLU(),
-            nn.AvgPool1d(kernel_size=10),
-            nn.Conv1d(16, 32, 10),
-            nn.LeakyReLU(),
-            nn.AvgPool1d(kernel_size=10),
+            nn.AvgPool1d(kernel_size=4),
             nn.Flatten(),
-            nn.Linear(96,1)
+            nn.Linear(80,1)
         )
 
     def forward(self, x):
