@@ -7,13 +7,13 @@ class LucasMachine(nn.Module):
     def __init__(self):
         super().__init__()
         self.band_net = nn.Sequential(
-            # nn.Linear(4200,1)
-            nn.Linear(4200,64),
-            nn.LeakyReLU(),
-            nn.Linear(64, 1)
+            nn.Linear(132, 100),
+            nn.ReLU(),
+            nn.Linear(100,1)
         )
 
-    def forward(self, x):
+    def forward(self, x, aux):
+        #x = torch.cat((x,aux), dim=1)
         x = self.band_net(x)
         return x
 

@@ -6,30 +6,31 @@ from torch.utils.data import DataLoader
 from lucas_machine import LucasMachine
 
 def train(device):
-    batch_size = 3000
+    batch_size = 30000
     cid = LucasDataset(is_train=True)
     dataloader = DataLoader(cid, batch_size=batch_size, shuffle=True)
     model = LucasMachine()
     model.train()
     model.to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-2, weight_decay=1e-5)
-    criterion = torch.nn.MSELoss(reduction='mean')
-    num_epochs = 300
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=0.0001)
+    criterion = torch.nn.MSELoss(reduction='sum')
+    num_epochs = 10000
     n_batches = int(len(cid)/batch_size) + 1
     batch_number = 0
     loss = None
 
     for epoch in range(num_epochs):
         batch_number = 0
-        for (x, y) in dataloader:
+        for (x, aux, y) in dataloader:
             x = x.to(device)
+            aux = aux.to(device)
             y = y.to(device)
-            optimizer.zero_grad()
-            y_hat = model(x)
+            y_hat = model(x, aux)
             y_hat = y_hat.reshape(-1)
             loss = criterion(y_hat, y)
             loss.backward()
             optimizer.step()
+            optimizer.zero_grad()
             batch_number += 1
             print(f'Epoch:{epoch + 1} (of {num_epochs}), Batch: {batch_number} of {n_batches}, Loss:{loss.item():.6f}')
 

@@ -20,10 +20,11 @@ def test(device):
     predicteds = []
 
     # print(f"Actual SOC\t\t\tPredicted SOC")
-    for (x, y) in dataloader:
+    for (x, aux, y) in dataloader:
         x = x.to(device)
+        aux = aux.to(device)
         y = y.to(device)
-        y_hat = model(x)
+        y_hat = model(x, aux)
         y_hat = y_hat.reshape(-1)
         loss = criterion(y_hat, y)
         itr = itr+1
@@ -37,8 +38,8 @@ def test(device):
     print(f"Loss {loss_cum:.2f}")
     print(f"R^2 {r2_score(actuals, predicteds):.2f}")
 
-    for i in range(10):
-        print(f"{actuals[i]:.3f}\t\t{predicteds[i]:.3f}")
+    # for i in range(10):
+    #     print(f"{actuals[i]:.3f}\t\t{predicteds[i]:.3f}")
 
 
 if __name__ == "__main__":

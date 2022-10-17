@@ -23,11 +23,12 @@ def train(device):
 
     for epoch in range(num_epochs):
         batch_number = 0
-        for (x, y) in dataloader:
+        for (x, aux, y) in dataloader:
             x = x.to(device)
+            aux = aux.to(device)
             y = y.to(device)
             optimizer.zero_grad()
-            y_hat = model(x)
+            y_hat = model(x, aux)
             y_hat = y_hat.reshape(-1)
             loss = criterion(y_hat, y)
             loss.backward()
@@ -55,10 +56,11 @@ def test(device):
     predicteds = []
 
     # print(f"Actual SOC\t\t\tPredicted SOC")
-    for (x, y) in dataloader:
+    for (x, aux, y) in dataloader:
         x = x.to(device)
+        aux = aux.to(device)
         y = y.to(device)
-        y_hat = model(x)
+        y_hat = model(x, aux)
         y_hat = y_hat.reshape(-1)
         loss = criterion(y_hat, y)
         itr = itr+1
