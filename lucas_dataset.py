@@ -11,13 +11,13 @@ import dwt
 
 class LucasDataset(Dataset):
     def __init__(self, is_train=True):
-        self.preload = True
+        self.preload = False
         self.dump = False
         self.DWT = False
         self.is_train = is_train
-        self.csv_file_location = "data/lucasmid.csv"
-        self.work_csv_file_location_train = "data/train.csv"
-        self.work_csv_file_location_test = "data/test.csv"
+        self.csv_file_location = "data/lucas.csv"
+        self.work_csv_file_location_train = "data/train-mid.csv"
+        self.work_csv_file_location_test = "data/test-mid.csv"
         self.scaler = None
         if self.preload:
             if self.is_train:

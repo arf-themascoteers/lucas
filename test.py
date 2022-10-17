@@ -35,8 +35,8 @@ def test(device):
             predicteds.append(y_hat[i].detach().item())
 
     loss_cum = loss_cum / itr
-    print(f"Loss {loss_cum:.2f}")
-    print(f"R^2 {r2_score(actuals, predicteds):.2f}")
+    print(f"Loss {loss_cum:.4f}")
+    print(f"R^2 {r2_score(actuals, predicteds):.4f}")
 
     # for i in range(10):
     #     print(f"{actuals[i]:.3f}\t\t{predicteds[i]:.3f}")
