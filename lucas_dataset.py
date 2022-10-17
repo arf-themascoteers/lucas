@@ -13,9 +13,9 @@ class LucasDataset(Dataset):
     def __init__(self, is_train=True):
         self.preload = True
         self.dump = False
-        self.DWT = True
+        self.DWT = False
         self.is_train = is_train
-        self.csv_file_location = "data/lucas.csv"
+        self.csv_file_location = "data/lucasmid.csv"
         self.work_csv_file_location_train = "data/train.csv"
         self.work_csv_file_location_test = "data/test.csv"
         self.scaler = None
@@ -28,7 +28,7 @@ class LucasDataset(Dataset):
         else:
             self.df = pd.read_csv(self.csv_file_location)
             self.df = self.df.drop(columns=["lc1","lu1"])
-            self.df = self.df.loc[self.df['oc'] <= 10]
+            #self.df = self.df.loc[self.df['oc'] <= 40]
             train, test = model_selection.train_test_split(self.df, test_size=0.2)
             self.df = train
             if not self.is_train:

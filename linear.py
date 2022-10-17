@@ -12,8 +12,8 @@ def train():
     x = ds.get_x()
     y = ds.get_y()
     aux = ds.get_aux()
-    #new_x = np.concatenate((x,aux), axis=1)
-    reg = LinearRegression().fit(x,y)
+    new_x = np.concatenate((x,aux), axis=1)
+    reg = LinearRegression().fit(new_x,y)
 
     print("Train done")
 
@@ -25,8 +25,8 @@ def test():
     x = ds.get_x()
     y = ds.get_y()
     aux = ds.get_aux()
-    #new_x = np.concatenate((x,aux), axis=1)
-    y_hat = reg.predict(x)
+    new_x = np.concatenate((x,aux), axis=1)
+    y_hat = reg.predict(new_x)
 
     print("R2",r2_score(y, y_hat))
     print("MSE",mean_squared_error(y, y_hat))
