@@ -14,7 +14,7 @@ def train():
     aux = ds.get_aux()
     new_x = np.concatenate((x,aux), axis=1)
     start = time.time()
-    reg = RandomForestRegressor().fit(x,y)
+    reg = RandomForestRegressor(max_depth=15, n_estimators=1000).fit(x,y)
 
     print("Train done")
     end = time.time()
