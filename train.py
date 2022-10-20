@@ -4,9 +4,10 @@ from lucas_dataset import LucasDataset
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from lucas_machine import LucasMachine
+import time
 
 def train(device):
-    batch_size = 30000
+    batch_size = 20000
     cid = LucasDataset(is_train=True)
     dataloader = DataLoader(cid, batch_size=batch_size, shuffle=True)
     model = LucasMachine()
@@ -14,11 +15,11 @@ def train(device):
     model.to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=0.001)
     criterion = torch.nn.MSELoss(reduction='sum')
-    num_epochs = 700
+    num_epochs = 1000
     n_batches = int(len(cid)/batch_size) + 1
     batch_number = 0
     loss = None
-
+    start = time.time()
     for epoch in range(num_epochs):
         batch_number = 0
         for (x, aux, y) in dataloader:
@@ -35,6 +36,9 @@ def train(device):
             print(f'Epoch:{epoch + 1} (of {num_epochs}), Batch: {batch_number} of {n_batches}, Loss:{loss.item():.6f}')
 
     print("Train done")
+    end = time.time()
+    required = end - start
+    print(f"Train seconds: {required}")
     torch.save(model, 'models/soc.h5')
 
 

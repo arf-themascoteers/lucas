@@ -6,6 +6,8 @@ import pickle
 from sklearn.metrics import r2_score
 from sklearn.metrics import r2_score, mean_squared_error
 import numpy as np
+import time
+
 
 def train():
     ds = lucas_dataset.LucasDataset(is_train=True)
@@ -13,9 +15,13 @@ def train():
     y = ds.get_y()
     aux = ds.get_aux()
     new_x = np.concatenate((x,aux), axis=1)
-    reg = LinearRegression().fit(new_x,y)
+    start = time.time()
+    reg = LinearRegression().fit(x,y)
 
     print("Train done")
+    end = time.time()
+    required = end - start
+    print(f"Train seconds: {required}")
 
     pickle.dump(reg, open("models/linear3","wb"))
 
@@ -26,8 +32,11 @@ def test():
     y = ds.get_y()
     aux = ds.get_aux()
     new_x = np.concatenate((x,aux), axis=1)
-    y_hat = reg.predict(new_x)
-
+    start = time.time()
+    y_hat = reg.predict(x)
+    end = time.time()
+    required = end - start
+    print(f"Test seconds: {required}")
     print("R2",r2_score(y, y_hat))
     print("MSE",mean_squared_error(y, y_hat))
 
