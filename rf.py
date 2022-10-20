@@ -14,12 +14,13 @@ def train():
     aux = ds.get_aux()
     new_x = np.concatenate((x,aux), axis=1)
     start = time.time()
-    reg = RandomForestRegressor(max_depth=15, n_estimators=1000).fit(x,y)
+    reg = RandomForestRegressor().fit(x,y)
 
     print("Train done")
     end = time.time()
     required = end - start
     print(f"Train seconds: {required}")
+    print(f"Depth: {reg.tree_.max_depth}")
 
     pickle.dump(reg, open("models/rf","wb"))
 
