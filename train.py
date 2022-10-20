@@ -7,7 +7,7 @@ from lucas_machine import LucasMachine
 import time
 
 def train(device):
-    batch_size = 20000
+    batch_size = 30000
     cid = LucasDataset(is_train=True)
     dataloader = DataLoader(cid, batch_size=batch_size, shuffle=True)
     model = LucasMachine()

@@ -11,8 +11,8 @@ import dwt
 
 class LucasDataset(Dataset):
     def __init__(self, is_train=True):
-        self.preload = True
-        self.dump = False
+        self.preload = False
+        self.dump = True
         self.DWT = False
         self.is_train = is_train
         self.csv_file_location = "data/lucas.csv"
