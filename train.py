@@ -15,18 +15,17 @@ def train(device):
     model.to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=0.001)
     criterion = torch.nn.MSELoss(reduction='sum')
-    num_epochs = 3000
+    num_epochs = 1000
     n_batches = int(len(cid)/batch_size) + 1
     batch_number = 0
     loss = None
     start = time.time()
     for epoch in range(num_epochs):
         batch_number = 0
-        for (x, aux, y) in dataloader:
+        for (x, y) in dataloader:
             x = x.to(device)
-            aux = aux.to(device)
             y = y.to(device)
-            y_hat = model(x, aux)
+            y_hat = model(x)
             y_hat = y_hat.reshape(-1)
             loss = criterion(y_hat, y)
             loss.backward()

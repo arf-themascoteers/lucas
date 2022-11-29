@@ -21,11 +21,10 @@ def test(device):
     predicteds = []
     start = time.time()
     # print(f"Actual SOC\t\t\tPredicted SOC")
-    for (x, aux, y) in dataloader:
+    for (x, y) in dataloader:
         x = x.to(device)
-        aux = aux.to(device)
         y = y.to(device)
-        y_hat = model(x, aux)
+        y_hat = model(x)
         y_hat = y_hat.reshape(-1)
         loss = criterion(y_hat, y)
         itr = itr+1
