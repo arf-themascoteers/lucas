@@ -13,8 +13,6 @@ def train():
     ds = lucas_dataset.LucasDataset(is_train=True)
     x = ds.get_x()
     y = ds.get_y()
-    aux = ds.get_aux()
-    new_x = np.concatenate((x,aux), axis=1)
     start = time.time()
     reg = LinearRegression().fit(x,y)
 
@@ -30,8 +28,6 @@ def test():
     ds = lucas_dataset.LucasDataset(is_train=False)
     x = ds.get_x()
     y = ds.get_y()
-    aux = ds.get_aux()
-    new_x = np.concatenate((x,aux), axis=1)
     start = time.time()
     y_hat = reg.predict(x)
     end = time.time()
