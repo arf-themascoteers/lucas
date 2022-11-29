@@ -4,10 +4,10 @@ import torch
 
 
 class LucasMachine(nn.Module):
-    def __init__(self):
+    def __init__(self, size):
         super().__init__()
         self.fc = nn.Sequential(
-            nn.Linear(33, 20),
+            nn.Linear(size, 20),
             nn.ReLU(),
             nn.Linear(20, 10),
             nn.ReLU(),

@@ -9,33 +9,30 @@ import numpy as np
 import time
 
 
-def train():
-    ds = lucas_dataset.LucasDataset(is_train=True)
-    x = ds.get_x()
-    y = ds.get_y()
+def train(x, y):
     start = time.time()
     reg = LinearRegression().fit(x,y)
 
-    print("Train done")
+    #print("Train done")
     end = time.time()
     required = end - start
-    print(f"Train seconds: {required}")
+    #print(f"Train seconds: {required}")
 
-    pickle.dump(reg, open("models/linear3","wb"))
+    #pickle.dump(reg, open("models/linear3","wb"))
+    return reg
 
-def test():
-    reg = pickle.load(open('models/linear3', 'rb'))
-    ds = lucas_dataset.LucasDataset(is_train=False)
-    x = ds.get_x()
-    y = ds.get_y()
+def test(reg, x, y):
+    #reg = pickle.load(open('models/linear3', 'rb'))
+
     start = time.time()
     y_hat = reg.predict(x)
     end = time.time()
     required = end - start
-    print(f"Test seconds: {required}")
-    print("R2",r2_score(y, y_hat))
-    print("MSE",mean_squared_error(y, y_hat))
-
+    r2 = r2_score(y, y_hat)
+    #print(f"Test seconds: {required}")
+    # print("R2",r2)
+    # print("MSE",mean_squared_error(y, y_hat))
+    return r2
     # for i in range(10):
     #     a_y = y[i]
     #     a_y_hat = y_hat[i]
@@ -52,7 +49,24 @@ def dump():
         a = (z * 0.5) + 400
         b = z+11
         print(f"{b},",end="")
-    #
-train()
-test()
-#dump()
+
+
+if __name__ == "__main__":
+    train_ds = lucas_dataset.LucasDataset(is_train=True)
+    test_ds = lucas_dataset.LucasDataset(is_train=False)
+
+    train_x = train_ds.get_x()
+    train_y = train_ds.get_y()
+    train_new_x = train_ds.get_new_x()
+
+    test_x = test_ds.get_x()
+    test_y = test_ds.get_y()
+    test_new_x = test_ds.get_new_x()
+
+    reg = train(train_x, train_y)
+    without_si = test(reg, test_x, test_y)
+
+    reg = train(train_new_x,train_y)
+    with_si = test(reg, test_new_x, test_y)
+
+    print(without_si, with_si)
