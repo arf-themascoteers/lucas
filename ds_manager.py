@@ -8,7 +8,8 @@ class DSManager:
     def __init__(self):
         csv_file_location = "data/miner.csv"
         df = pd.read_csv(csv_file_location)
-        self.train, self.test = model_selection.train_test_split(df, test_size=0.2)
+        npdf = df.to_numpy()
+        self.train, self.test = model_selection.train_test_split(npdf, test_size=0.2)
         self.test_ds = None
         self.train_ds = None
 
