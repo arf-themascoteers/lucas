@@ -4,7 +4,7 @@ import linear
 from functools import partial
 
 MIN_WAVELENGTH = 400
-MAX_WAVELENGTH = 2399
+MAX_WAVELENGTH = 2499
 DIFF = 1
 size = ((MAX_WAVELENGTH - MIN_WAVELENGTH) // DIFF) + 1
 X_ARRAY_DIFF = 0.5
@@ -23,7 +23,7 @@ def si(mat, x, y):
 def run_plz():
     matrix = np.zeros([size, size])
 
-    np.save("nps/matrix.npy", matrix)
+    np.save("nps/matrix2.npy", matrix)
 
     dm = ds_manager.DSManager()
     train_ds = dm.get_train_ds()
@@ -40,7 +40,10 @@ def run_plz():
             matrix[i][j] = linear.get_r2(train_x, train_y, test_x, test_y)
 
         print(f"Done {i} among {size}")
-        np.save("nps/matrix.npy", matrix)
+        np.save("nps/matrix2.npy", matrix)
 
     print("done")
 
+
+if __name__ == "__main__":
+    run_plz()
