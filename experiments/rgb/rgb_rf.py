@@ -1,9 +1,11 @@
 import ds_manager
 from sklearn.ensemble import RandomForestRegressor
+import os
 
 
 def run_plz():
-    dm = ds_manager.DSManager(btype="reflectance")
+    os.chdir("../../")
+    dm = ds_manager.DSManager(btype="reflectance", ctype="rgb")
     train_ds = dm.get_train_ds()
     test_ds = dm.get_test_ds()
 
