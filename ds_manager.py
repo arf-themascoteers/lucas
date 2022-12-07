@@ -8,7 +8,7 @@ import colorsys
 
 
 class DSManager:
-    def __init__(self, size = "full", btype="absorbance", ctype=None):
+    def __init__(self, size = "full", btype="absorbance", ctype=None, si=[]):
         PRELOAD = True
 
         if PRELOAD:
@@ -21,7 +21,7 @@ class DSManager:
             npdf = df.to_numpy()
             np.save("nps/npdf.npy", npdf)
 
-        npdf = self._preprocess(npdf, btype, ctype)
+        npdf = self._preprocess(npdf, btype, ctype, si)
         train, test = model_selection.train_test_split(npdf, test_size=0.2, random_state=1)
 
         self.test_ds = lucas_dataset.LucasDataset(test)
@@ -33,15 +33,16 @@ class DSManager:
     def get_train_ds(self):
         return self.train_ds
 
-    def _preprocess(self, source, btype, ctype):
+    def _preprocess(self, data, btype, ctype, si):
+        source = data.copy()
         self.scaler = MinMaxScaler()
         x_scaled = self.scaler.fit_transform(source[:, 0].reshape(-1, 1))
         source[:, 0] = np.squeeze(x_scaled)
 
         if ctype is not None:
-            blue = self._get_wavelength(source, 478).reshape(-1,1)
-            green = self._get_wavelength(source, 546).reshape(-1,1)
-            red = self._get_wavelength(source, 659).reshape(-1,1)
+            blue = self.get_blue(data).reshape(-1,1)
+            green = self.get_green(data).reshape(-1,1)
+            red = self.get_red(data).reshape(-1,1)
             source = np.concatenate((source[:,0:1], blue, green, red), axis=1)
 
         if btype == "reflectance" or ctype is not None:
@@ -54,12 +55,16 @@ class DSManager:
             dest = self.get_hsv(source)
             source = np.concatenate((source, dest[:,1:]), axis=1)
 
+        for spectral_index in si:
+            si_vals = self.get_si(data, spectral_index).reshape(-1,1)
+            source = np.concatenate((source, si_vals), axis=1)
+
         return source
 
-    def get_hsv(self, source):
-        dest = np.copy(source)
-        for i in range(source.shape[0]):
-            b, g, r = source[i, 1], source[i, 2], source[i, 3]
+    def get_hsv(self, rgb):
+        dest = rgb.copy()
+        for i in range(rgb.shape[0]):
+            b, g, r = rgb[i, 1], rgb[i, 2], rgb[i, 3]
             (h, s, v) = colorsys.rgb_to_hsv(r, g, b)
             dest[i, 1], dest[i, 2], dest[i, 3] = v, s, h
         return dest
@@ -67,6 +72,27 @@ class DSManager:
     def _get_wavelength(self, data, wl):
         index = (wl - 400)*2
         return data[:,index]
+
+    def get_si(self, data, spectral_index):
+        if spectral_index == "soci":
+            return self.get_soci(data)
+
+        return None
+
+    def get_soci(self, data):
+        blue = self.get_blue(data)
+        green = self.get_green(data)
+        red = self.get_red(data)
+        return (blue)/(red*green)
+
+    def get_blue(self, source):
+        return self._get_wavelength(source, 478)
+
+    def get_green(self, source):
+        return self._get_wavelength(source, 546)
+
+    def get_red(self, source):
+        return self._get_wavelength(source, 659)
 
 
 if __name__ == "__main__":
