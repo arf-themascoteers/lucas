@@ -4,7 +4,7 @@ import torch
 
 
 class LucasMachine(nn.Module):
-    def __init__(self, size=4200, mid=2):
+    def __init__(self, size, mid):
         super().__init__()
         self.fc = nn.Sequential(
             nn.Linear(size, mid),

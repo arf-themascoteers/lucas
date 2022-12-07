@@ -5,7 +5,7 @@ import time
 
 
 def train(device, ds):
-    batch_size = 1000
+    batch_size = 3000
     dataloader = DataLoader(ds, batch_size=batch_size, shuffle=True)
     x_size = ds.get_x().shape[1]
     mid = 2

@@ -7,7 +7,7 @@ import os
 
 def run_plz():
     os.chdir("../../")
-    dm = ds_manager.DSManager(si=["ibs"], ctype="rgb")
+    dm = ds_manager.DSManager(si=["soci"], ctype="ibs")
     train_ds = dm.get_train_ds()
     test_ds = dm.get_test_ds()
 
