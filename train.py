@@ -1,10 +1,8 @@
 import torch
-import torch.nn.functional as F
-from lucas_dataset import LucasDataset
-import torch.nn as nn
 from torch.utils.data import DataLoader
 from lucas_machine import LucasMachine
 import time
+
 
 def train(device, ds):
     batch_size = 1000
