@@ -85,6 +85,8 @@ class DSManager:
     def get_si(self, data, spectral_index):
         if spectral_index == "soci":
             return self.get_soci(data)
+        if spectral_index == "ibs":
+            return self.get_ibs(data)
 
         return None
 
@@ -93,6 +95,10 @@ class DSManager:
         green = self.get_green(data)
         red = self.get_red(data)
         return (blue)/(red*green)
+
+    def get_ibs(self, data):
+        blue = self.get_blue(data)
+        return 1/(blue**2)
 
     def get_blue(self, source):
         return self._get_wavelength(source, 478)
