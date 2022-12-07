@@ -1,11 +1,11 @@
 import ds_manager
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 import os
 
 
 def run_plz():
     os.chdir("../../")
-    dm = ds_manager.DSManager(si=["ibs"], ctype="hsv")
+    dm = ds_manager.DSManager(si=["ibs"], ctype="rgbhsv")
     train_ds = dm.get_train_ds()
     test_ds = dm.get_test_ds()
 
@@ -14,7 +14,7 @@ def run_plz():
     test_x = test_ds.get_x()
     test_y = test_ds.get_y()
 
-    reg = LinearRegression().fit(train_x, train_y)
+    reg = RandomForestRegressor(max_depth=5, n_estimators=100).fit(train_x, train_y)
     r2 = reg.score(test_x, test_y)
 
     print(r2)
