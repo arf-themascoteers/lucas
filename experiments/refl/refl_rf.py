@@ -14,7 +14,7 @@ def run_plz():
     test_x = test_ds.get_x()
     test_y = test_ds.get_y()
 
-    reg = RandomForestRegressor(max_depth=5, n_estimators=1000).fit(train_x, train_y)
+    reg = RandomForestRegressor(max_depth=5, n_estimators=100).fit(train_x, train_y)
     r2 = reg.score(test_x, test_y)
 
     print(r2)
