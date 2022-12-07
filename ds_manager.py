@@ -8,7 +8,7 @@ import colorsys
 
 
 class DSManager:
-    def __init__(self, size = "full", btype="absorbance", ctype=None, si=[]):
+    def __init__(self, size = "full", btype="absorbance", ctype=None, si=[], si_only = False):
         PRELOAD = True
 
         if PRELOAD:
@@ -21,7 +21,7 @@ class DSManager:
             npdf = df.to_numpy()
             np.save("nps/npdf.npy", npdf)
 
-        npdf = self._preprocess(npdf, btype, ctype, si)
+        npdf = self._preprocess(npdf, btype, ctype, si, si_only)
         train, test = model_selection.train_test_split(npdf, test_size=0.2, random_state=1)
 
         self.test_ds = lucas_dataset.LucasDataset(test)
@@ -33,33 +33,42 @@ class DSManager:
     def get_train_ds(self):
         return self.train_ds
 
-    def _preprocess(self, data, btype, ctype, si):
-        source = data.copy()
+    def _preprocess(self, absorbance, btype, ctype, si, si_only):
+        data = absorbance.copy()
         self.scaler = MinMaxScaler()
-        x_scaled = self.scaler.fit_transform(source[:, 0].reshape(-1, 1))
-        source[:, 0] = np.squeeze(x_scaled)
+        x_scaled = self.scaler.fit_transform(data[:, 0].reshape(-1, 1))
+        data[:, 0] = np.squeeze(x_scaled)
 
-        if ctype is not None:
-            blue = self.get_blue(data).reshape(-1,1)
-            green = self.get_green(data).reshape(-1,1)
-            red = self.get_red(data).reshape(-1,1)
-            source = np.concatenate((source[:,0:1], blue, green, red), axis=1)
+        if si_only:
+            data = data[:,0:1]
+        else:
+            if ctype is not None:
+                blue = self.get_blue(absorbance).reshape(-1, 1)
+                green = self.get_green(absorbance).reshape(-1, 1)
+                red = self.get_red(absorbance).reshape(-1, 1)
+                data = np.concatenate((data[:,0:1], blue, green, red), axis=1)
 
-        if btype == "reflectance" or ctype is not None:
-            source[:, 1:] = 1 / (10 ** source[:, 1:])
+            if btype == "reflectance" or ctype is not None:
+                data = self.get_reflectance(data)
 
-        if ctype == "hsv":
-            source = self.get_hsv(source)
+            if ctype == "hsv":
+                data = self.get_hsv(data)
 
-        if ctype == "rgbhsv":
-            dest = self.get_hsv(source)
-            source = np.concatenate((source, dest[:,1:]), axis=1)
+            if ctype == "rgbhsv":
+                dest = self.get_hsv(data)
+                data = np.concatenate((data, dest[:,1:]), axis=1)
 
+        reflectance = self.get_reflectance(absorbance)
         for spectral_index in si:
-            si_vals = self.get_si(data, spectral_index).reshape(-1,1)
-            source = np.concatenate((source, si_vals), axis=1)
+            si_vals = self.get_si(reflectance, spectral_index).reshape(-1, 1)
+            data = np.concatenate((data, si_vals), axis=1)
 
-        return source
+        return data
+
+    def get_reflectance(self, source):
+        data = source.copy()
+        data[:, 1:] = 1 / (10 ** data[:, 1:])
+        return data
 
     def get_hsv(self, rgb):
         dest = rgb.copy()
