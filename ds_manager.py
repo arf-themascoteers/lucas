@@ -58,10 +58,11 @@ class DSManager:
                 dest = self.get_hsv(data)
                 data = np.concatenate((data, dest[:,1:]), axis=1)
 
-        reflectance = self.get_reflectance(absorbance)
-        for spectral_index in si:
-            si_vals = self.get_si(reflectance, spectral_index).reshape(-1, 1)
-            data = np.concatenate((data, si_vals), axis=1)
+        if len(si) > 0:
+            reflectance = self.get_reflectance(absorbance)
+            for spectral_index in si:
+                si_vals = self.get_si(reflectance, spectral_index).reshape(-1, 1)
+                data = np.concatenate((data, si_vals), axis=1)
 
         return data
 
