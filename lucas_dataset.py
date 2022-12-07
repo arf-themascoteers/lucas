@@ -1,28 +1,12 @@
 import torch
 from torch.utils.data import Dataset
-from sklearn.preprocessing import MinMaxScaler
-import numpy as np
+
 
 class LucasDataset(Dataset):
     def __init__(self, source):
-        self.scaler = None
-        self.df = self._preprocess(source)
-        # self.x = self.df[:, 1:]
-        # blue = np.array(self.x["490"].values).reshape(-1,1)
-        # print(blue)
-        # green = self.x[:, 1]
-        # red = self.x[:, 2]
-        #soci = ((blue) / (red * green)).reshape(-1, 1)
-
-    def _preprocess(self, source):
-        self.scaler = MinMaxScaler()
-        x_scaled = self.scaler.fit_transform(source[:, 0].reshape(-1, 1))
-        source[:, 0] = np.squeeze(x_scaled)
-        source[:, 1:] = 1 / (10 ** source[:, 1:])
-        return source
-
-    def unscale(self, value):
-        return self.scaler.inverse_transform([[value]])[0][0]
+        self.df = source
+        self.y = source[:,0]
+        self.x = source[:,1:]
 
     def __len__(self):
         return len(self.df)
@@ -33,10 +17,10 @@ class LucasDataset(Dataset):
         return torch.tensor(this_x, dtype=torch.float32), torch.tensor(soc, dtype=torch.float32)
 
     def get_y(self):
-        return self.df[:,0]
+        return self.y
 
     def get_x(self):
-        return self.df[:,1:]
+        return self.x
 
     def get_si(self, sif):
         return sif(self.get_x())
