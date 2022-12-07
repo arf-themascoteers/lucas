@@ -48,12 +48,21 @@ class DSManager:
             source[:, 1:] = 1 / (10 ** source[:, 1:])
 
         if ctype == "hsv":
-            for i in range(source.shape[0]):
-                b, g, r = source[i,1], source[i,2], source[i,3]
-                (h, s, v) = colorsys.rgb_to_hsv(r, g, b)
-                source[i,1], source[i,2], source[i,3] = v, s, h
+            source = self.get_hsv(source)
+
+        if ctype == "rgbhsv":
+            dest = self.get_hsv(source)
+            source = np.concatenate((source, dest[:,1:]), axis=1)
 
         return source
+
+    def get_hsv(self, source):
+        dest = np.zeros_like(source)
+        for i in range(source.shape[0]):
+            b, g, r = source[i, 1], source[i, 2], source[i, 3]
+            (h, s, v) = colorsys.rgb_to_hsv(r, g, b)
+            dest[i, 1], dest[i, 2], dest[i, 3] = v, s, h
+        return dest
 
     def _get_wavelength(self, data, wl):
         index = (wl - 400)*2
