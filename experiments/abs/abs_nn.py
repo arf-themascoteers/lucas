@@ -2,9 +2,11 @@ import ds_manager
 import torch
 import train
 import test
+import os
 
 
 def run_plz():
+    os.chdir("../../")
     dm = ds_manager.DSManager()
     train_ds = dm.get_train_ds()
     test_ds = dm.get_test_ds()
