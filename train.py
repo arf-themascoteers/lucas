@@ -10,7 +10,7 @@ def train(device, ds):
     x_size = ds.get_x().shape[1]
     mid = 2
     if x_size < 10:
-        mid = 100
+        mid = 200
     model = LucasMachine(size = x_size, mid = mid)
     model.train()
     model.to(device)

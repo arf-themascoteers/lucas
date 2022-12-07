@@ -57,7 +57,7 @@ class DSManager:
         return source
 
     def get_hsv(self, source):
-        dest = np.zeros_like(source)
+        dest = np.copy(source)
         for i in range(source.shape[0]):
             b, g, r = source[i, 1], source[i, 2], source[i, 3]
             (h, s, v) = colorsys.rgb_to_hsv(r, g, b)
