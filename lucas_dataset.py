@@ -7,6 +7,12 @@ class LucasDataset(Dataset):
     def __init__(self, source):
         self.scaler = None
         self.df = self._preprocess(source)
+        # self.x = self.df[:, 1:]
+        # blue = np.array(self.x["490"].values).reshape(-1,1)
+        # print(blue)
+        # green = self.x[:, 1]
+        # red = self.x[:, 2]
+        #soci = ((blue) / (red * green)).reshape(-1, 1)
 
     def _preprocess(self, source):
         self.scaler = MinMaxScaler()

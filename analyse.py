@@ -16,10 +16,10 @@ def get_bands(index):
     return transform_index(unraveled[0]), transform_index(unraveled[1])
 
 def anal():
-    array = np.load("nps/matrix2.npy")
+    array = np.load("nps/ndi4.npy")
     array = array.flatten()
     indices = np.argsort(array)
-    for i in range(1000):
+    for i in range(100):
         index = indices[len(indices) - 1 - i]
         b1, b2 = get_bands(index)
         print(b1, b2, array[index])
