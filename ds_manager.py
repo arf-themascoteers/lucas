@@ -49,9 +49,9 @@ class DSManager:
 
         if ctype == "hsv":
             for i in range(source.shape[0]):
-                b, g, r = source[1], source[2], source[3]
+                b, g, r = source[i,1], source[i,2], source[i,3]
                 (h, s, v) = colorsys.rgb_to_hsv(r, g, b)
-                source[1], source[2], source[3] = v, s, h
+                source[i,1], source[i,2], source[i,3] = v, s, h
 
         return source
 
