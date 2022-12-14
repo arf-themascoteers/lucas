@@ -68,12 +68,8 @@ if __name__ == "__main__":
                 print("Was done already: ", data[index_par][index_col])
             else:
                 ds = ds_manager.DSManager(**par)
-                r2s = evaluate.r2_once(ds, col)
-                r2_mean = np.mean(r2s)
-                print(par["name"], col, r2_mean)
-                r2_log = open("r2_log.txt", "a")
-                r2_log.write(f"{col} - {par['name']}: {str(r2s)}\n")
-                r2_log.close()
-                data[index_par][index_col] = r2_mean
+                r2 = evaluate.r2_once(ds, col)
+                print(par["name"], col, r2)
+                data[index_par][index_col] = r2
                 df = pd.DataFrame(data=data, columns=column_values, index=names)
                 df.to_csv(path)
