@@ -7,7 +7,7 @@ import numpy as np
 def run_plz():
     os.chdir("../../")
     dm = ds_manager.DSManager(si=["ibs"], si_only=True)
-    return evaluate.r2(dm, "rf")
+    return evaluate.r2(dm, "linear")
 
 
 if __name__ == "__main__":
