@@ -28,10 +28,10 @@ if __name__ == "__main__":
         {"ctype": "xyy", "si": ["ibs"], "name": "xyY + IBS"},
         {"ctype": "rgbhsvxyzxyy", "si": ["ibs"], "name": "RGB + HSV + XYZ + xyY + IBS"},
 
-        {"ctype": "rgb", "si": ["soci", "ibs"], "name": "RGB + IBS"},
-        {"ctype": "hsv", "si": ["soci", "ibs"], "name": "HSV + IBS"},
-        {"ctype": "xyz", "si": ["soci", "ibs"], "name": "XYZ + IBS"},
-        {"ctype": "xyy", "si": ["soci", "ibs"], "name": "xyY + IBS"},
+        {"ctype": "rgb", "si": ["soci", "ibs"], "name": "RGB + SOCI + IBS"},
+        {"ctype": "hsv", "si": ["soci", "ibs"], "name": "HSV + SOCI + IBS"},
+        {"ctype": "xyz", "si": ["soci", "ibs"], "name": "XYZ + SOCI +IBS"},
+        {"ctype": "xyy", "si": ["soci", "ibs"], "name": "xyY + SOCI +IBS"},
         {"ctype": "rgbhsvxyzxyy", "si": ["soci", "ibs"], "name": "RGB + HSV + XYZ + xyY + SOCI + IBS"},
 
         {"si": ["soci"], "si_only": True, "name": "SOCI"},
