@@ -9,8 +9,10 @@ def train(device, ds):
     dataloader = DataLoader(ds, batch_size=batch_size, shuffle=True)
     x_size = ds.get_x().shape[1]
     mid = 2
-    if x_size < 10:
-        mid = 200
+    if x_size == 1:
+        mid = 5
+    elif x_size < 10:
+        mid = 30
         batch_size = 500
     model = LucasMachine(size = x_size, mid = mid)
     model.train()
