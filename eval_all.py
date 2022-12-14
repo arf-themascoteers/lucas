@@ -10,23 +10,36 @@ if __name__ == "__main__":
     params = [
         {"ctype" : "rgb",  "name" : "RGB"},
         {"ctype" : "hsv", "name" : "HSV"},
+        {"ctype" : "xyz", "name" : "XYZ"},
+        {"ctype" : "xyy", "name" : "xyY"},
+
         {"ctype" : "rgbhsv", "name" : "RGB + HSV"},
+        {"ctype" : "rgbhsvxyzxyy", "name" : "RGB + HSV + XYZ + xyY"},
 
         {"ctype": "rgb", "si": ["soci"], "name": "RGB + SOCI"},
         {"ctype": "hsv", "si": ["soci"], "name": "HSV + SOCI"},
-        {"ctype": "rgbhsv", "si": ["soci"], "name": "RGB + HSV + SOCI"},
+        {"ctype": "xyz", "si": ["soci"], "name": "XYZ + SOCI"},
+        {"ctype": "xyy", "si": ["soci"], "name": "xyY + SOCI"},
+        {"ctype": "rgbhsvxyzxyy", "si": ["soci"], "name": "RGB + HSV + XYZ + xyY + SOCI"},
 
         {"ctype": "rgb", "si": ["ibs"], "name": "RGB + IBS"},
         {"ctype": "hsv", "si": ["ibs"], "name": "HSV + IBS"},
-        {"ctype": "rgbhsv", "si": ["ibs"], "name": "RGB + HSV + IBS"},
+        {"ctype": "xyz", "si": ["ibs"], "name": "XYZ + IBS"},
+        {"ctype": "xyy", "si": ["ibs"], "name": "xyY + IBS"},
+        {"ctype": "rgbhsvxyzxyy", "si": ["ibs"], "name": "RGB + HSV + XYZ + xyY + IBS"},
 
-        {"ctype": "rgbhsv", "si": ["soci", "ibs"], "name": "RGB + HSV + SOCI + IBS"},
+        {"ctype": "rgb", "si": ["soci", "ibs"], "name": "RGB + IBS"},
+        {"ctype": "hsv", "si": ["soci", "ibs"], "name": "HSV + IBS"},
+        {"ctype": "xyz", "si": ["soci", "ibs"], "name": "XYZ + IBS"},
+        {"ctype": "xyy", "si": ["soci", "ibs"], "name": "xyY + IBS"},
+        {"ctype": "rgbhsvxyzxyy", "si": ["soci", "ibs"], "name": "RGB + HSV + XYZ + xyY + SOCI + IBS"},
 
-        {"btype": "absorbance", "name": "Absorbance"},
-        {"btype": "reflectance", "name": "Reflectance"},
         {"si": ["soci"], "si_only": True, "name": "SOCI"},
         {"si": ["ibs"], "si_only": True, "name": "IBS"},
         {"si": ["soci", "ibs"], "si_only": True, "name": "SOCI + IBS"},
+
+        {"btype": "absorbance", "name": "Absorbance"},
+        {"btype": "reflectance", "name": "Reflectance"},
 
         {"btype": "absorbance", "si": ["soci"], "name": "Absorbance + SOCI"},
         {"btype": "reflectance", "si": ["soci"], "name": "Reflectance + SOCI"},

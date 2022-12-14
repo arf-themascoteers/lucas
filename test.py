@@ -29,12 +29,12 @@ def test(device, ds, model):
 
         r2 = r2_score(y.detach().cpu().numpy(), y_hat.detach().cpu().numpy())
         loss_cum = loss_cum / itr
-        print(f"Loss {loss.item():.4f}")
-        print(f"R^2 {r2:.4f}")
+        #print(f"Loss {loss.item():.4f}")
+        #print(f"R^2 {r2:.4f}")
 
     end = time.time()
     required = end - start
-    print(f"Test seconds: {required}")
+    #print(f"Test seconds: {required}")
     return r2
 
 # if __name__ == "__main__":

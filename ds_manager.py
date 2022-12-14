@@ -63,15 +63,16 @@ class DSManager:
 
         if si_only:
             data = data[:,0:1]
+
         else:
+            if btype == "reflectance":
+                data = self.get_reflectance(data)
+
             if ctype is not None:
                 blue = self.get_blue(absorbance).reshape(-1, 1)
                 green = self.get_green(absorbance).reshape(-1, 1)
                 red = self.get_red(absorbance).reshape(-1, 1)
                 data = np.concatenate((data[:,0:1], blue, green, red), axis=1)
-
-            if btype == "reflectance":
-                data = self.get_reflectance(data)
 
             if ctype == "hsv":
                 data = self.get_hsv(data)
@@ -87,6 +88,12 @@ class DSManager:
             if ctype == "xyy":
                 dest = self.get_xyy(data)
                 data = np.concatenate((data, dest[:,1:]), axis=1)
+
+            if ctype == "rgbhsvxyzxyy":
+                hsv = self.get_hsv(data)
+                xyz = self.get_xyz(data)
+                xyy = self.get_xyy(data)
+                data = np.concatenate((data, hsv[:,1:], xyz[:,1:], xyy[:,1:]), axis=1)
 
         if len(si) > 0:
             reflectance = self.get_reflectance(absorbance)
