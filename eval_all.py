@@ -8,21 +8,6 @@ import os
 if __name__ == "__main__":
     columns = {"linear" : "Linear", "rf" : "RF", "nn" : "NN"}
     params = [
-        {"btype" : "absorbance", "name" : "Absorbance"},
-        {"btype" : "reflectance",  "name" : "Reflectance"},
-        {"si": ["soci"], "si_only":True, "name": "SOCI"},
-        {"si": ["ibs"], "si_only":True, "name": "IBS"},
-        {"si": ["soci","ibs"], "si_only":True, "name": "SOCI + IBS"},
-
-        {"btype" : "absorbance", "si": ["soci"], "name": "Absorbance + SOCI"},
-        {"btype" : "reflectance", "si": ["soci"], "name": "Reflectance + SOCI"},
-
-        {"btype": "absorbance", "si": ["ibs"], "name": "Absorbance + IBS"},
-        {"btype": "reflectance", "si": ["ibs"], "name": "Reflectance + IBS"},
-
-        {"btype": "absorbance", "si": ["soci","ibs"], "name": "Absorbance + SOCI + IBS"},
-        {"btype": "reflectance", "si": ["soci","ibs"], "name": "Reflectance + SOCI + IBS"},
-
         {"ctype" : "rgb",  "name" : "RGB"},
         {"ctype" : "hsv", "name" : "HSV"},
         {"ctype" : "rgbhsv", "name" : "RGB + HSV"},
@@ -35,7 +20,22 @@ if __name__ == "__main__":
         {"ctype": "hsv", "si": ["ibs"], "name": "HSV + IBS"},
         {"ctype": "rgbhsv", "si": ["ibs"], "name": "RGB + HSV + IBS"},
 
-        {"ctype": "rgbhsv", "si": ["soci", "ibs"], "name": "RGB + HSV + SOCI + IBS"}
+        {"ctype": "rgbhsv", "si": ["soci", "ibs"], "name": "RGB + HSV + SOCI + IBS"},
+
+        {"btype": "absorbance", "name": "Absorbance"},
+        {"btype": "reflectance", "name": "Reflectance"},
+        {"si": ["soci"], "si_only": True, "name": "SOCI"},
+        {"si": ["ibs"], "si_only": True, "name": "IBS"},
+        {"si": ["soci", "ibs"], "si_only": True, "name": "SOCI + IBS"},
+
+        {"btype": "absorbance", "si": ["soci"], "name": "Absorbance + SOCI"},
+        {"btype": "reflectance", "si": ["soci"], "name": "Reflectance + SOCI"},
+
+        {"btype": "absorbance", "si": ["ibs"], "name": "Absorbance + IBS"},
+        {"btype": "reflectance", "si": ["ibs"], "name": "Reflectance + IBS"},
+
+        {"btype": "absorbance", "si": ["soci", "ibs"], "name": "Absorbance + SOCI + IBS"},
+        {"btype": "reflectance", "si": ["soci", "ibs"], "name": "Reflectance + SOCI + IBS"}
     ]
     data = np.zeros((len(params), len(columns)))
     column_values = [columns[key] for key in columns.keys()]
