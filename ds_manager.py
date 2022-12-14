@@ -7,6 +7,7 @@ import numpy as np
 import colorsys
 from sklearn.model_selection import KFold
 import time
+import colour
 
 
 
@@ -79,6 +80,10 @@ class DSManager:
                 dest = self.get_hsv(data)
                 data = np.concatenate((data, dest[:,1:]), axis=1)
 
+            if ctype == "bigxyz":
+                dest = self.get_bigxyz(data)
+                data = np.concatenate((data, dest[:,1:]), axis=1)
+
         if len(si) > 0:
             reflectance = self.get_reflectance(absorbance)
             for spectral_index in si:
@@ -131,6 +136,13 @@ class DSManager:
     def get_red(self, source):
         return self._get_wavelength(source, 659)
 
+    def get_bigxyz(self, rgb):
+        dest = rgb.copy()
+        for i in range(rgb.shape[0]):
+            rgb_array = [rgb[i, 3], rgb[i, 2], rgb[i, 1]]
+            XYZ = colour.sRGB_to_XYZ(rgb)
+            dest[i, 3], dest[i, 2], dest[i, 1] = XYZ[0], XYZ[1], XYZ[2]
+        return dest
 
 
 if __name__ == "__main__":
