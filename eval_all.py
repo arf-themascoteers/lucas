@@ -48,7 +48,11 @@ if __name__ == "__main__":
         {"btype": "reflectance", "si": ["ibs"], "name": "Reflectance + IBS"},
 
         {"btype": "absorbance", "si": ["soci", "ibs"], "name": "Absorbance + SOCI + IBS"},
-        {"btype": "reflectance", "si": ["soci", "ibs"], "name": "Reflectance + SOCI + IBS"}
+        {"btype": "reflectance", "si": ["soci", "ibs"], "name": "Reflectance + SOCI + IBS"},
+
+        {"ctype": "rgbhsv", "si": ["soci", "ibs"], "name": "RGB + HSV + SOCI + IBS"},
+        {"ctype": "rgbhsv", "si": ["soci", "ibs"], "name": "RGB + HSV + SOCI + IBS"},
+        {"ctype": "rgbhsv", "si": ["soci", "ibs"], "name": "RGB + HSV + SOCI + IBS"}
     ]
     data = np.zeros((len(params), len(columns)))
     column_values = [columns[key] for key in columns.keys()]
