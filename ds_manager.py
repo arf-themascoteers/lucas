@@ -144,7 +144,7 @@ class DSManager:
         dest = rgb.copy()
         for i in range(rgb.shape[0]):
             rgb_array = [rgb[i, 3], rgb[i, 2], rgb[i, 1]]
-            XYZ = colour.sRGB_to_XYZ(rgb)
+            XYZ = colour.sRGB_to_XYZ(rgb_array)
             dest[i, 3], dest[i, 2], dest[i, 1] = XYZ[0], XYZ[1], XYZ[2]
         return dest
 
@@ -152,7 +152,7 @@ class DSManager:
         dest = rgb.copy()
         for i in range(rgb.shape[0]):
             rgb_array = [rgb[i, 3], rgb[i, 2], rgb[i, 1]]
-            XYZ = colour.sRGB_to_XYZ(rgb)
+            XYZ = colour.sRGB_to_XYZ(rgb_array)
             xyY = colour.XYZ_to_xyY(XYZ)
             dest[i, 3], dest[i, 2], dest[i, 1] = xyY[0], xyY[1], xyY[2]
         return dest

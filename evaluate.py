@@ -24,11 +24,11 @@ def r2(dm, model):
             if model == "linear":
                 model_instance = LinearRegression()
             elif model == "rf":
-                model_instance = RandomForestRegressor(max_depth=2, n_estimators=100)
+                model_instance = RandomForestRegressor(max_depth=5, n_estimators=1000)
 
             model_instance = model_instance.fit(train_x,train_y)
             r2 = model_instance.score(test_x, test_y)
-        #print(r2)
+        print(r2)
         r2s.append(r2)
 
     return np.array(r2s)
