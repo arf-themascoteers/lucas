@@ -34,7 +34,7 @@ def train(device, ds):
             optimizer.step()
             optimizer.zero_grad()
             batch_number += 1
-            #print(f'Epoch:{epoch + 1} (of {num_epochs}), Batch: {batch_number} of {n_batches}, Loss:{loss.item():.6f}')
+            print(f'Epoch:{epoch + 1} (of {num_epochs}), Batch: {batch_number} of {n_batches}, Loss:{loss.item():.6f}')
 
     print("Train done")
     end = time.time()
