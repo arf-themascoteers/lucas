@@ -73,3 +73,5 @@ if __name__ == "__main__":
                 data[index_par][index_col] = r2
                 df = pd.DataFrame(data=data, columns=column_values, index=names)
                 df.to_csv(path)
+
+    print("Done all")

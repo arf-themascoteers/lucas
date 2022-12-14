@@ -55,11 +55,16 @@ class DSManager:
             test_data = self.full_data[test_index]
             yield LucasDataset(train_data), LucasDataset(test_data)
 
+    def normalize(self, data):
+        for i in range(data.shape[1]):
+            scaler = MinMaxScaler()
+            x_scaled = scaler.fit_transform(data[:,i].reshape(-1, 1))
+            data[:,i] = np.squeeze(x_scaled)
+        return data
+
     def _preprocess(self, absorbance, btype, ctype, si, si_only):
         data = absorbance.copy()
-        self.scaler = MinMaxScaler()
-        x_scaled = self.scaler.fit_transform(data[:, 0].reshape(-1, 1))
-        data[:, 0] = np.squeeze(x_scaled)
+
 
         if si_only:
             data = data[:,0:1]
@@ -101,7 +106,7 @@ class DSManager:
                 si_vals = self.get_si(reflectance, spectral_index).reshape(-1, 1)
                 data = np.concatenate((data, si_vals), axis=1)
 
-        return data
+        return self.normalize(data)
 
     def get_reflectance(self, source):
         data = source.copy()

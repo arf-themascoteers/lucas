@@ -9,10 +9,8 @@ def train(device, ds):
     dataloader = DataLoader(ds, batch_size=batch_size, shuffle=True)
     x_size = ds.get_x().shape[1]
     mid = 2
-    if x_size == 1:
-        mid = 5
-    elif x_size < 10:
-        mid = 30
+    if x_size < 10:
+        mid = 500
         batch_size = 500
     model = LucasMachine(size = x_size, mid = mid)
     model.train()
@@ -36,7 +34,7 @@ def train(device, ds):
             optimizer.step()
             optimizer.zero_grad()
             batch_number += 1
-            #print(f'Epoch:{epoch + 1} (of {num_epochs}), Batch: {batch_number} of {n_batches}, Loss:{loss.item():.6f}')
+            print(f'Epoch:{epoch + 1} (of {num_epochs}), Batch: {batch_number} of {n_batches}, Loss:{loss.item():.6f}')
 
     print("Train done")
     end = time.time()
