@@ -54,7 +54,7 @@ if __name__ == "__main__":
     column_values = [columns[key] for key in columns.keys()]
     names = [par["name"] for par in params]
 
-    path = "results2.csv"
+    path = "results_once.csv"
     if os.path.exists(path):
         df = pd.read_csv(path)
         df.drop(columns=df.columns[0], axis=1, inplace=True)
@@ -68,7 +68,7 @@ if __name__ == "__main__":
                 print("Was done already: ", data[index_par][index_col])
             else:
                 ds = ds_manager.DSManager(**par)
-                r2s = evaluate.r2(ds, col)
+                r2s = evaluate.r2_once(ds, col)
                 r2_mean = np.mean(r2s)
                 print(par["name"], col, r2_mean)
                 r2_log = open("r2_log.txt", "a")
