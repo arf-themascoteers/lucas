@@ -50,8 +50,8 @@ if __name__ == "__main__":
         {"btype": "absorbance", "si": ["soci", "ibs"], "name": "Absorbance + SOCI + IBS"},
         {"btype": "reflectance", "si": ["soci", "ibs"], "name": "Reflectance + SOCI + IBS"},
 
-        {"ctype": "rgbhsv", "si": ["soci", "ibs"], "name": "RGB + HSV + SOCI + IBS"},
-        {"ctype": "rgbhsv", "si": ["soci", "ibs"], "name": "RGB + HSV + SOCI + IBS"},
+        {"ctype": "rgbhsv", "si": ["soci"], "name": "RGB + HSV + SOCI"},
+        {"ctype": "rgbhsv", "si": ["ibs"], "name": "RGB + HSV + IBS"},
         {"ctype": "rgbhsv", "si": ["soci", "ibs"], "name": "RGB + HSV + SOCI + IBS"}
     ]
     data = np.zeros((len(params), len(columns)))
