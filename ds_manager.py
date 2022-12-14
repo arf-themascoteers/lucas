@@ -1,18 +1,25 @@
-import lucas_dataset
+from lucas_dataset import LucasDataset
 from sklearn import model_selection
 import pandas as pd
 from torch.utils.data import DataLoader
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import colorsys
+from sklearn.model_selection import KFold
+import time
+
 
 
 class DSManager:
-    def __init__(self, size = "full", btype="absorbance", ctype=None, si=[], si_only = False):
+    def __init__(self, size = "full", btype="absorbance", ctype=None, si=[], si_only = False, name=None):
         PRELOAD = True
+        self.name = name
+        if self.name is None:
+            epoch_time = str(int(time.time()))
+            self.name = f"{btype}_{ctype}_{epoch_time}"
 
         if PRELOAD:
-            npdf = np.load("nps/npdf.npy")
+            npdf = np.load(f"nps/npdf.npy")
         else:
             csv_file_location = "data/lucas.csv"
             if size == "min":
@@ -23,15 +30,29 @@ class DSManager:
 
         npdf = self._preprocess(npdf, btype, ctype, si, si_only)
         train, test = model_selection.train_test_split(npdf, test_size=0.2, random_state=1)
-
-        self.test_ds = lucas_dataset.LucasDataset(test)
-        self.train_ds = lucas_dataset.LucasDataset(train)
+        self.full_data = np.concatenate((train, test), axis=0)
+        self.full_ds = LucasDataset(npdf)
+        self.train_ds = LucasDataset(train)
+        self.test_ds = LucasDataset(test)
 
     def get_test_ds(self):
         return self.test_ds
 
     def get_train_ds(self):
         return self.train_ds
+
+    def get_full_ds(self):
+        return self.full_ds
+
+    def get_name(self):
+        return self.name
+
+    def get_10_folds(self):
+        kf = KFold(n_splits=10)
+        for i, (train_index, test_index) in enumerate(kf.split(self.full_data)):
+            train_data = self.full_data[train_index]
+            test_data = self.full_data[test_index]
+            yield LucasDataset(train_data), LucasDataset(test_data)
 
     def _preprocess(self, absorbance, btype, ctype, si, si_only):
         data = absorbance.copy()
@@ -48,7 +69,7 @@ class DSManager:
                 red = self.get_red(absorbance).reshape(-1, 1)
                 data = np.concatenate((data[:,0:1], blue, green, red), axis=1)
 
-            if btype == "reflectance" or ctype is not None:
+            if btype == "reflectance":
                 data = self.get_reflectance(data)
 
             if ctype == "hsv":
@@ -109,6 +130,7 @@ class DSManager:
 
     def get_red(self, source):
         return self._get_wavelength(source, 659)
+
 
 
 if __name__ == "__main__":
