@@ -6,8 +6,8 @@ import numpy as np
 
 def run_plz():
     os.chdir("../../")
-    dm = ds_manager.DSManager(btype="reflectance", ctype="bigx")
-    return evaluate.r2(dm, "rf")
+    dm = ds_manager.DSManager(btype="reflectance", ctype="xyz")
+    return evaluate.r2(dm, "nn")
 
 
 if __name__ == "__main__":

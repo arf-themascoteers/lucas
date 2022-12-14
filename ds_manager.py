@@ -80,8 +80,12 @@ class DSManager:
                 dest = self.get_hsv(data)
                 data = np.concatenate((data, dest[:,1:]), axis=1)
 
-            if ctype == "bigxyz":
-                dest = self.get_bigxyz(data)
+            if ctype == "xyz":
+                dest = self.get_xyz(data)
+                data = np.concatenate((data, dest[:,1:]), axis=1)
+                
+            if ctype == "xyy":
+                dest = self.get_xyy(data)
                 data = np.concatenate((data, dest[:,1:]), axis=1)
 
         if len(si) > 0:
@@ -136,12 +140,21 @@ class DSManager:
     def get_red(self, source):
         return self._get_wavelength(source, 659)
 
-    def get_bigxyz(self, rgb):
+    def get_xyz(self, rgb):
         dest = rgb.copy()
         for i in range(rgb.shape[0]):
             rgb_array = [rgb[i, 3], rgb[i, 2], rgb[i, 1]]
             XYZ = colour.sRGB_to_XYZ(rgb)
             dest[i, 3], dest[i, 2], dest[i, 1] = XYZ[0], XYZ[1], XYZ[2]
+        return dest
+
+    def get_xyy(self, rgb):
+        dest = rgb.copy()
+        for i in range(rgb.shape[0]):
+            rgb_array = [rgb[i, 3], rgb[i, 2], rgb[i, 1]]
+            XYZ = colour.sRGB_to_XYZ(rgb)
+            xyY = colour.XYZ_to_xyY(XYZ)
+            dest[i, 3], dest[i, 2], dest[i, 1] = xyY[0], xyY[1], xyY[2]
         return dest
 
 
