@@ -30,7 +30,7 @@ def calculate_r2(train_ds, test_ds, model):
 def r2_once(dm, model):
     r2 = calculate_r2(dm.get_train_ds(), dm.get_test_ds(), model)
     print(r2)
-    r2
+    return r2
 
 
 def r2(dm, model):
