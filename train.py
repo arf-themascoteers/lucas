@@ -36,7 +36,7 @@ def train(device, ds):
             batch_number += 1
             print(f'Epoch:{epoch + 1} (of {num_epochs}), Batch: {batch_number} of {n_batches}, Loss:{loss.item():.6f}')
 
-    print("Train done")
+    #print("Train done")
     end = time.time()
     required = end - start
     print(f"Train seconds: {required}")
