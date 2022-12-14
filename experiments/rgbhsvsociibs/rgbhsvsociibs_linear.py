@@ -1,7 +1,7 @@
 import ds_manager
 import evaluate
 import os
-import numpy as np
+
 
 
 def run_plz():
